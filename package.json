@@ -1,0 +1,38 @@
+{
+  "name": "angular2-jwt-refresh",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/angular2-jwt-refresh.ts",
+  "scripts": {
+    "build": "tsc --alwaysStrict -d --outDir dist --noUnusedLocals --noUnusedParameters --pretty --noEmitOnError",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint --config tslint.json src/**/*.ts",
+    "watch": "npm run build -- -w",
+    "prepublish": "npm run build"
+  },
+  "keywords": [
+    "angular2",
+    "jwt",
+    "refresh",
+    "token"
+  ],
+  "author": "Leonardo Bazico",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@angular/common": "^2.4.6",
+    "@angular/compiler": "^2.4.6",
+    "@angular/compiler-cli": "^2.4.6",
+    "@angular/core": "^2.4.6",
+    "@angular/http": "^2.4.6",
+    "@angular/platform-browser": "^2.4.6",
+    "angular2-jwt": "^0.1.28",
+    "ngc": "^1.0.0",
+    "rxjs": "^5.1.0",
+    "tslint": "^4.4.2",
+    "tslint-eslint-rules": "^3.2.3",
+    "tslint-ionic-rules": "0.0.8",
+    "typescript": "^2.1.5",
+    "zone.js": "^0.7.6"
+  }
+}
