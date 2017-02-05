@@ -193,8 +193,8 @@ export class JwtConfigService {
         res = res.json();
 
         if (!res || !res[this.refreshConfig.tokenName] || !res[this.getAuthConfig().tokenName]) {
-          localStorage.setItem(this.refreshConfig.tokenName, undefined);
-          localStorage.setItem(this.getAuthConfig().tokenName, undefined);
+          localStorage.removeItem(this.refreshConfig.tokenName);
+          localStorage.removeItem(this.getAuthConfig().tokenName);
 
           return false;
         }
