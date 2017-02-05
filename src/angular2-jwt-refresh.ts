@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
-    Http,
-    Request,
-    RequestMethod,
-    RequestOptions,
-    RequestOptionsArgs,
-    Response,
+  Http,
+  Request,
+  RequestMethod,
+  RequestOptions,
+  RequestOptionsArgs,
+  Response,
 } from '@angular/http';
 import {
   AuthConfig,
@@ -172,16 +172,17 @@ export class JwtHttp extends AuthHttp {
 
 export interface RefreshConfig {
   endPoint: string;
-  payload: any;
+  payload?: any;
   beforeSeconds?: number;
   tokenName?: string;
   refreshTokenGetter?(): string | Promise<string>;
-  tokenSetter?(res: any): boolean | Promise<void>;
+  tokenSetter?(res: Response): boolean | Promise<void>;
 }
 
 export class JwtConfigService {
   constructor(protected refreshConfig: RefreshConfig,
               protected authOptions: AuthConfig) {
+    this.refreshConfig.payload = this.refreshConfig.payload || { };
     this.refreshConfig.beforeSeconds = this.refreshConfig.beforeSeconds === 0 ? 0 : (this.refreshConfig.beforeSeconds || 600);
     this.refreshConfig.tokenName = this.refreshConfig.tokenName || 'refresh_token';
 

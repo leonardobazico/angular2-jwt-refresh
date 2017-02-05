@@ -30,8 +30,8 @@ export class AppModule {}
 export function getJwtHttp(http) {
   let jwtOptions = {
     endPoint: 'https://myapi.domain.com/auth',
-    payload: { type: 'refresh' },
     // optional
+    payload: { type: 'refresh' },
     beforeSeconds: 600, // refresh tokeSn before 10 min
     tokenName: 'refresh_token',
     refreshTokenGetter: (() => localStorage.getItem('refresh_token')),
