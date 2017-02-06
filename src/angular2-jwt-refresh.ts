@@ -148,6 +148,10 @@ export class JwtHttp extends AuthHttp {
   protected _requestWithToken(req: Request, token: string): Observable<Response> {
     req.headers.set(this._config.headerName, this._config.headerPrefix + token);
 
+    return this.httpRequest(req);
+  }
+
+  private httpRequest(req: Request) {
     return this._http.request(req);
   }
 
