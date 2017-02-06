@@ -15,19 +15,18 @@ npm i angular2-jwt-refresh --save
 ```typescript
 import { NgModule } from '@angular/core';
 import { Http } from '@angular/http';
-import { AuthConfig } from 'angular2-jwt';
-import { JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
+import { AuthConfig, JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
 
 @NgModule({
   providers: [{
     provide: JwtHttp,
     useFactory: getJwtHttp,
-    deps: [ Http, AuthConfig ]
+    deps: [ Http ]
   }]
 })
 export class AppModule {}
 
-export function getJwtHttp(http, AuthConfig) {
+export function getJwtHttp(http) {
   let jwtOptions = {
     endPoint: 'https://myapi.domain.com/auth',
     // optional
