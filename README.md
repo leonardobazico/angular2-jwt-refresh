@@ -22,12 +22,12 @@ import { JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
   providers: [{
     provide: JwtHttp,
     useFactory: getJwtHttp,
-    deps: [ Http ]
+    deps: [ Http, AuthConfig ]
   }]
 })
 export class AppModule {}
 
-export function getJwtHttp(http) {
+export function getJwtHttp(http, AuthConfig) {
   let jwtOptions = {
     endPoint: 'https://myapi.domain.com/auth',
     // optional
