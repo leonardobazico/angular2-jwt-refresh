@@ -1,8 +1,10 @@
 {
   "name": "angular2-jwt-refresh",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Refresh token support for angular2-jwt",
-  "main": "src/angular2-jwt-refresh.ts",
+  "main": "dist/angular2-jwt-refresh.js",
+  "typings": "./dist/angular2-jwt-refresh.d.js",
+  "types": "./dist/angular2-jwt-refresh.d.js",
   "scripts": {
     "prebuild": "npm run lint && npm test -- --single-run",
     "build": "tsc --alwaysStrict -d --outDir dist --noUnusedLocals --noUnusedParameters --pretty --noEmitOnError",
@@ -12,6 +14,7 @@
     "prepublish": "npm run build"
   },
   "keywords": [
+    "angular",
     "angular2",
     "jwt",
     "refresh",
@@ -19,6 +22,14 @@
   ],
   "author": "Leonardo Bazico",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonardobazico/angular2-jwt-refresh.git"
+  },
+  "bugs": {
+    "url": "https://github.com/leonardobazico/angular2-jwt-refresh/issues"
+  },
+  "homepage": "https://github.com/leonardobazico/angular2-jwt-refresh#readme",
   "dependencies": {},
   "devDependencies": {
     "@angular/common": "^2.4.6",
