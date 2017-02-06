@@ -64,9 +64,9 @@
     "zone.js": "^0.7.6"
   },
   "peerDependencies": {
-    "@angular/core": "^2.0.0",
-    "@angular/http": "^2.0.0",
-    "angular2-jwt": "^0.1.28",
-    "rxjs": "^5.0.0"
+    "@angular/core": ">= 2.0.0",
+    "@angular/http": ">= 2.0.0",
+    "angular2-jwt": ">= 0.1.28",
+    "rxjs": ">= 5.0.0"
   }
 }
