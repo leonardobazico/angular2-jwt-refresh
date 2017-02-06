@@ -4,10 +4,11 @@
   "description": "Refresh token support for angular2-jwt",
   "main": "src/angular2-jwt-refresh.ts",
   "scripts": {
+    "prebuild": "npm run lint && npm test -- --single-run",
     "build": "tsc --alwaysStrict -d --outDir dist --noUnusedLocals --noUnusedParameters --pretty --noEmitOnError",
     "test": "karma start",
     "lint": "tslint --config tslint.json src/**/*.ts",
-    "watch": "npm run build -- -w",
+    "watch": "npm test",
     "prepublish": "npm run build"
   },
   "keywords": [

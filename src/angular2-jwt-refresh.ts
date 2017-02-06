@@ -47,7 +47,6 @@ export class JwtHttp extends AuthHttp {
   }
 
   public request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-
     let token: string | Promise<string> = this._config.tokenGetter();
 
     if (token instanceof Promise) {
