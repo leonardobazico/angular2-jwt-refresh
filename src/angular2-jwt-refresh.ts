@@ -230,6 +230,8 @@ export class JwtConfigService {
   }
 }
 
+export * from 'angular2-jwt';
+
 @NgModule({
   imports: [ HttpModule ],
   providers: [
