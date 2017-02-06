@@ -7,7 +7,7 @@
   "types": "./dist/angular2-jwt-refresh.d.ts",
   "scripts": {
     "prebuild": "npm run lint && npm test -- --single-run",
-    "build": "tsc --alwaysStrict -d --outDir dist --noUnusedLocals --noUnusedParameters --pretty --noEmitOnError",
+    "build": "tsc -d --outDir dist --noUnusedLocals --noUnusedParameters --pretty --noEmitOnError",
     "test": "karma start",
     "lint": "tslint --config tslint.json src/**/*.ts",
     "watch": "npm test",
@@ -62,5 +62,11 @@
     "typescript": "^2.1.5",
     "webpack": "^2.2.1",
     "zone.js": "^0.7.6"
+  },
+  "peerDependencies": {
+    "@angular/core": "^2.0.0",
+    "@angular/http": "^2.0.0",
+    "angular2-jwt": "^0.1.28",
+    "rxjs": "^5.0.0"
   }
 }

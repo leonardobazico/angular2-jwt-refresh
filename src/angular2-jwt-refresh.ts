@@ -22,6 +22,7 @@ import {
 } from 'angular2-jwt';
 import 'rxjs';
 import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 
 
@@ -74,11 +75,11 @@ export class JwtHttp extends AuthHttp {
 
     // if is refreshing token, wait next false value
     if (this.isRefreshing) {
-      return Observable.create((observer) => {
+      return Observable.create((observer: Observer<void>) => {
         this.refresherStream
           .subscribe((value) => {
             if (!value) {
-              observer.next();
+              observer.next(null);
               observer.complete();
             }
           });
