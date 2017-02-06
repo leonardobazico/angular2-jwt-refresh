@@ -67,7 +67,7 @@ describe('JwtConfigService', () => {
       beforeSeconds: 0,
       tokenName: 'refresh',
       refreshTokenGetter: () => 'this is a token',
-      tokenSetter: (res: Response) => true,
+      tokenSetter: (res: Response) => !!res,
     };
     const config = new JwtConfigService(configExpected, new AuthConfig()).getRefreshConfig();
     expect(config).toBeDefined();
