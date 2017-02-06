@@ -1,11 +1,18 @@
-import { Injectable } from '@angular/core';
+import {
+  Injectable,
+  ModuleWithProviders,
+  NgModule,
+  Optional,
+  SkipSelf
+} from '@angular/core';
 import {
   Http,
+  HttpModule,
   Request,
   RequestMethod,
   RequestOptions,
   RequestOptionsArgs,
-  Response,
+  Response
 } from '@angular/http';
 import {
   AuthConfig,
@@ -220,5 +227,30 @@ export class JwtConfigService {
 
   getAuthConfig(): IAuthConfig {
     return this.authOptions.getConfig();
+  }
+}
+
+@NgModule({
+  imports: [ HttpModule ],
+  providers: [
+    AuthConfig,
+    AuthHttp,
+    JwtConfigService,
+    JwtHelper,
+    JwtHttp
+  ]
+})
+export class JwtHttpModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: JwtHttpModule,
+      providers: [ ]
+    };
+  }
+
+  constructor(@Optional() @SkipSelf() parentModule: JwtHttpModule) {
+    if (parentModule) {
+      throw new Error('JwtHttpModule is already loaded.');
+    }
   }
 }
