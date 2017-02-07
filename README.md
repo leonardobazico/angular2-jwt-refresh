@@ -14,8 +14,9 @@ npm i angular2-jwt-refresh --save
 
 ```typescript
 import { NgModule } from '@angular/core';
-import { Http } from '@angular/http';
-import { AuthConfig, JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
+import { Http, RequestOptions } from '@angular/http';
+import { AuthConfig } from 'angular2-jwt';
+import { JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
 
 @NgModule({
   providers: [{
@@ -26,7 +27,7 @@ import { AuthConfig, JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
 })
 export class AppModule {}
 
-export function getJwtHttp(http) {
+export function getJwtHttp(http: Http, options: RequestOptions) {
   let jwtOptions = {
     endPoint: 'https://myapi.domain.com/auth',
     // optional
@@ -58,7 +59,8 @@ export function getJwtHttp(http) {
 
   return new JwtHttp(
     new JwtConfigService(jwtOptions, authConfig),
-    http
+    http,
+    options
   );
 }
 ```
