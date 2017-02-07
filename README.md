@@ -14,7 +14,7 @@ npm i angular2-jwt-refresh --save
 
 ```typescript
 import { NgModule } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { Http, RequestOptions, Response } from '@angular/http';
 import { AuthConfig } from 'angular2-jwt';
 import { JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
 
@@ -35,7 +35,7 @@ export function getJwtHttp(http: Http, options: RequestOptions) {
     beforeSeconds: 600, // refresh tokeSn before 10 min
     tokenName: 'refresh_token',
     refreshTokenGetter: (() => localStorage.getItem('refresh_token')),
-    tokenSetter: ((res: any): boolean | Promise<void> => {
+    tokenSetter: ((res: Response): boolean | Promise<void> => {
       res = res.json();
 
       if (!res['id_token'] || !res['refresh_token']) {
