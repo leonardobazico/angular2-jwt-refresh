@@ -9,6 +9,11 @@ This package extends [angular2-jwt](https://github.com/auth0/angular2-jwt) and w
 npm i angular2-jwt-refresh --save
 ```
 
+Don't forget to install peer dependencies
+```
+npm i @angular/core @angular/http angular2-jwt rxjs --save
+```
+
 
 ## Configuration
 
@@ -62,5 +67,43 @@ export function getJwtHttp(http: Http, options: RequestOptions) {
     http,
     options
   );
+}
+```
+
+## Using JwtHttp
+```typescript
+import { Injectable } from '@angular/core';
+import { Response } from '@angular/http';
+import { JwtHttp } from 'angular2-jwt-refresh';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
+
+import { AppConfig } from '../AppConfig';
+
+@Injectable()
+export class DataService {
+  private baseUrl: string = AppConfig.baseUrl + '/data';
+
+  constructor(private jwtHttp: JwtHttp) { }
+
+  getData(id: number): Observable<any> {
+    const url = this.baseUrl + '/' + id;
+
+    return this.jwtHttp
+      .get(url)
+      .map((res: Response) => {
+        return res.json();
+      });
+  }
+
+  saveData(data: any): Observable<string> {
+    const url = this.baseUrl + '/' (data['id'] ? data['id'] : '');
+
+    return this.jwtHttp
+      .post(url, data)
+      .map((res: Response) => {
+        return res.json();
+      });
+  }
 }
 ```
