@@ -9,7 +9,7 @@ This package extends [angular2-jwt](https://github.com/auth0/angular2-jwt) and w
 npm i angular2-jwt-refresh --save
 ```
 
-Don't forget to install peer dependencies
+Don't forget to install the peer dependencies
 ```
 npm i @angular/core @angular/http angular2-jwt rxjs --save
 ```
