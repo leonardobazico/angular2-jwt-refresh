@@ -138,6 +138,12 @@ export class JwtHttp extends AuthHttp {
         this.emitRefreshToken();
 
         return Observable.of(res);
+      })
+      .catch((res: any) => {
+        this.setRefreshing(false);
+        this.emitRefreshToken();
+
+        return Observable.of(res);
       });
   }
 

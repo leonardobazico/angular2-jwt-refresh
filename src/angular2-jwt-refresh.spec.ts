@@ -160,6 +160,43 @@ describe('JwtHttp', () => {
       });
     });
 
+    it('should emit refresh token null on error', (done: Function) => {
+      const config = { endPoint: 'endPoint' };
+      const jwtConfigService = new JwtConfigService(config, new AuthConfig());
+      const body = { };
+      const responseOptions = new ResponseOptions({ body: JSON.stringify(body), status: 404 });
+      const response = new Response(responseOptions);
+      localStorage.setItem(jwtConfigService.getAuthConfig().tokenName, expiredToken);
+
+      let jwtHttp: JwtHttp = new JwtHttp(jwtConfigService, null);
+
+      spyOn(AuthHttp.prototype, 'request' ).and.returnValue(Observable.of(''));
+      spyOn(jwtHttp, 'refreshTheToken').and.callThrough();
+      spyOn(jwtHttp, '_refreshTheToken').and.callThrough();
+      spyOn(jwtHttp, 'httpRequest').and.returnValue(Observable.of(response));
+
+      jwtHttp.refreshTokenStream
+        .subscribe((token) => {
+          expect(!!token).toBeFalsy();
+
+          expect(AuthHttp.prototype.request).toHaveBeenCalledTimes(0);
+          expect(jwtHttp['refreshTheToken']).toHaveBeenCalledWith(expiredToken);
+          expect(jwtHttp['_refreshTheToken']).toHaveBeenCalledWith();
+          expect(jwtHttp['httpRequest']).toHaveBeenCalled();
+          expect(!!jwtConfigService.getAuthConfig().tokenGetter()).toBeFalsy();
+          expect(!!jwtConfigService.getRefreshConfig().refreshTokenGetter()).toBeFalsy();
+          done();
+        });
+
+      jwtHttp.request(null, null)
+        .subscribe(
+          () => { },
+          (error) => {
+            expect(error).toEqual('Impossible to get new token');
+          }
+        );
+    });
+
     it('should refresh token', (done: Function) => {
       const config = { endPoint: 'endPoint' };
       const jwtConfigService = new JwtConfigService(config, new AuthConfig());
