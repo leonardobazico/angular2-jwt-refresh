@@ -1,6 +1,6 @@
 {
   "name": "angular2-jwt-refresh",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Refresh token support for angular2-jwt",
   "main": "dist/angular2-jwt-refresh.js",
   "typings": "./dist/angular2-jwt-refresh.d.ts",
