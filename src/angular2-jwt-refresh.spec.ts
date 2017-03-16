@@ -134,7 +134,7 @@ describe('JwtHttp', () => {
       let jwtHttp: JwtHttp = new JwtHttp(jwtConfigService, null);
 
       spyOn(jwtHttp, 'refreshTheToken').and.callThrough();
-      spyOn(jwtHttp, '_refreshTheToken').and.returnValue(Observable.of(''));
+      spyOn(jwtHttp as any, '_refreshTheToken').and.returnValue(Observable.of(''));
 
       jwtHttp.request(null);
 
@@ -150,7 +150,7 @@ describe('JwtHttp', () => {
 
       spyOn(AuthHttp.prototype, 'request' ).and.returnValue(Observable.of(''));
       spyOn(jwtHttp, 'refreshTheToken').and.callThrough();
-      spyOn(jwtHttp, '_refreshTheToken').and.returnValue(Observable.of(''));
+      spyOn(jwtHttp as any, '_refreshTheToken').and.returnValue(Observable.of(''));
 
       jwtHttp.request(null, null).subscribe(() => {
         expect(AuthHttp.prototype.request).toHaveBeenCalledWith(null, null);
@@ -172,8 +172,8 @@ describe('JwtHttp', () => {
 
       spyOn(AuthHttp.prototype, 'request' ).and.returnValue(Observable.of(''));
       spyOn(jwtHttp, 'refreshTheToken').and.callThrough();
-      spyOn(jwtHttp, '_refreshTheToken').and.callThrough();
-      spyOn(jwtHttp, 'httpRequest').and.returnValue(Observable.of(response));
+      spyOn(jwtHttp as any, '_refreshTheToken').and.callThrough();
+      spyOn(jwtHttp as any, 'httpRequest').and.returnValue(Observable.of(response));
 
       jwtHttp.refreshTokenStream
         .subscribe((token) => {
@@ -212,8 +212,8 @@ describe('JwtHttp', () => {
 
       spyOn(AuthHttp.prototype, 'request' ).and.returnValue(Observable.of(''));
       spyOn(jwtHttp, 'refreshTheToken').and.callThrough();
-      spyOn(jwtHttp, '_refreshTheToken').and.callThrough();
-      spyOn(jwtHttp, 'httpRequest').and.returnValue(Observable.of(response));
+      spyOn(jwtHttp as any, '_refreshTheToken').and.callThrough();
+      spyOn(jwtHttp as any, 'httpRequest').and.returnValue(Observable.of(response));
 
       jwtHttp.request(null, null).subscribe(() => {
         expect(AuthHttp.prototype.request).toHaveBeenCalledWith(null, null);
