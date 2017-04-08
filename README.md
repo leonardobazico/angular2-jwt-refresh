@@ -27,7 +27,7 @@ import { JwtConfigService, JwtHttp } from 'angular2-jwt-refresh';
   providers: [{
     provide: JwtHttp,
     useFactory: getJwtHttp,
-    deps: [ Http ]
+    deps: [ Http, RequestOptions ]
   }]
 })
 export class AppModule {}
