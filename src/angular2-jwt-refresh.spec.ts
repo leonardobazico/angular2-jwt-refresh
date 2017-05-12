@@ -1,8 +1,8 @@
 import {
-  Response,
-  ResponseOptions,
   RequestMethod,
-  RequestOptions
+  RequestOptions,
+  Response,
+  ResponseOptions
 } from '@angular/http';
 import { AuthConfig, AuthHttp } from 'angular2-jwt';
 import { encodeTestToken } from 'angular2-jwt/angular2-jwt-test-helpers';
