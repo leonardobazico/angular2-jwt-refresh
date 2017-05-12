@@ -1,4 +1,4 @@
-# angular2-jwt-refresh
+# angular2-jwt-refresh ![Travis CI Status](https://travis-ci.org/leonardobazico/angular2-jwt-refresh.svg?branch=master)
 
 This package extends [angular2-jwt](https://github.com/auth0/angular2-jwt) and was made to deal with refresh token.
 
