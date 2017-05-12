@@ -6,11 +6,12 @@
   "typings": "./dist/angular2-jwt-refresh.d.ts",
   "types": "./dist/angular2-jwt-refresh.d.ts",
   "scripts": {
-    "prebuild": "npm run lint && npm test -- --single-run",
+    "prebuild": "npm run lint && npm test",
     "build": "tsc -d --outDir dist --noUnusedLocals --noUnusedParameters --pretty --noEmitOnError",
-    "test": "karma start",
+    "karma": "karma start",
+    "test": "npm run karma -- --single-run",
     "lint": "tslint --config tslint.json src/**/*.ts",
-    "watch": "npm test",
+    "watch": "npm run karma",
     "prepublish": "npm run build"
   },
   "keywords": [
