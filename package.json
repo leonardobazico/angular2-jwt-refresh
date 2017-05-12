@@ -12,7 +12,8 @@
     "test": "npm run karma -- --single-run",
     "lint": "tslint --config tslint.json src/**/*.ts",
     "watch": "npm run karma",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "preversion": "npm run build"
   },
   "keywords": [
     "angular",
