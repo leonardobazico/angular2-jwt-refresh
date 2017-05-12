@@ -89,62 +89,74 @@ export class JwtHttp extends AuthHttp {
     }
   }
 
+  private getPayload(): Observable<any> {
+    if (this.refreshConfig.payload instanceof Promise) {
+      return Observable.fromPromise(this.refreshConfig.payload);
+    }
+
+    return Observable.of(this.refreshConfig.payload);
+  }
+
   protected _refreshTheToken() {
     this.setRefreshing(true);
 
-    let options = new RequestOptions({
-      body: this.refreshConfig.payload,
-      method: RequestMethod.Post,
-      url: this.refreshConfig.endPoint
-    });
-    let req = new Request(this._mergeOptions(options, this._defOpts));
-    let refreshToken: string | Promise<string> = this.refreshConfig.refreshTokenGetter();
-    let request;
+    return this.getPayload()
+      .flatMap((payload: any) => {
+        let requestWithToken;
+        let options = new RequestOptions({
+          body: payload,
+          method: RequestMethod.Post,
+          url: this.refreshConfig.endPoint
+        });
 
-    if (refreshToken instanceof Promise) {
-      request = Observable
-        .fromPromise(refreshToken)
-        .mergeMap((jwtToken: string) => this._requestWithToken(req, jwtToken));
-    } else {
-      request = this._requestWithToken(req, refreshToken);
-    }
+        let req = new Request(this._mergeOptions(options, this._defOpts));
+        let refreshToken: string | Promise<string> = this.refreshConfig.refreshTokenGetter();
 
-    return request
-      .flatMap((res: any) => {
-        const tokenSetter = this.refreshConfig.tokenSetter(res);
-        const onError = Observable.throw('Impossible to get new token');
+        if (refreshToken instanceof Promise) {
+          requestWithToken = Observable
+            .fromPromise(refreshToken)
+            .mergeMap((jwtToken: string) => this._requestWithToken(req, jwtToken));
+        } else {
+          requestWithToken = this._requestWithToken(req, refreshToken);
+        }
 
-        if (tokenSetter instanceof Promise) {
-          return Observable
-            .fromPromise(tokenSetter)
-            .catch(() => {
+        return requestWithToken
+          .flatMap((res: any) => {
+            const tokenSetter = this.refreshConfig.tokenSetter(res);
+            const onError = Observable.throw('Impossible to get new token');
 
-              this.setRefreshing(false);
-              this.emitRefreshToken();
+            if (tokenSetter instanceof Promise) {
+              return Observable
+                .fromPromise(tokenSetter)
+                .catch(() => {
 
+                  this.setRefreshing(false);
+                  this.emitRefreshToken();
+
+                  return onError;
+                })
+                .concatMap(() => Observable.of(res));
+            }
+
+            if (!tokenSetter) {
               return onError;
-            })
-            .concatMap(() => Observable.of(res));
-        }
+            }
 
-        if (!tokenSetter) {
-          return onError;
-        }
+            return Observable.of(res);
+          })
+          .concatMap((res: any) => {
+            this.setRefreshing(false);
+            this.emitRefreshToken();
 
-        return Observable.of(res);
-      })
-      .concatMap((res) => {
-        this.setRefreshing(false);
-        this.emitRefreshToken();
+            return Observable.of(res);
+          })
+          .catch((res: any) => {
+            this.setRefreshing(false);
+            this.emitRefreshToken();
 
-        return Observable.of(res);
-      })
-      .catch((res: any) => {
-        this.setRefreshing(false);
-        this.emitRefreshToken();
-
-        return Observable.of(res);
-      });
+            return Observable.of(res);
+          });
+        });
   }
 
   protected _mergeOptions(providedOpts: RequestOptionsArgs, defaultOpts?: RequestOptions) {
