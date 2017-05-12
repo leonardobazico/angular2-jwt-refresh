@@ -90,8 +90,8 @@ export class JwtHttp extends AuthHttp {
   }
 
   private getPayload(): Observable<any> {
-    if (this.refreshConfig.payload instanceof Promise) {
-      return Observable.fromPromise(this.refreshConfig.payload);
+    if (this.refreshConfig.payload && typeof this.refreshConfig.payload === 'function' && this.refreshConfig.payload() instanceof Promise) {
+      return Observable.fromPromise(this.refreshConfig.payload());
     }
 
     return Observable.of(this.refreshConfig.payload);

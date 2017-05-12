@@ -1,4 +1,9 @@
-import { Response, ResponseOptions } from '@angular/http';
+import {
+  Response,
+  ResponseOptions,
+  RequestMethod,
+  RequestOptions
+} from '@angular/http';
 import { AuthConfig, AuthHttp } from 'angular2-jwt';
 import { encodeTestToken } from 'angular2-jwt/angular2-jwt-test-helpers';
 import 'core-js';
@@ -197,8 +202,12 @@ describe('JwtHttp', () => {
         );
     });
 
-    it('should refresh token', (done: Function) => {
-      const config = { endPoint: 'endPoint' };
+    it('should get payload from a Promise', (done: Function) => {
+      const payload = { data: 'I\'m the payload' };
+      const config = {
+        payload: (() => Observable.of(payload).toPromise()),
+        endPoint: 'endPoint'
+      };
       const jwtConfigService = new JwtConfigService(config, new AuthConfig());
       const body = {
         id_token: validToken,
@@ -206,6 +215,40 @@ describe('JwtHttp', () => {
       };
       const responseOptions = new ResponseOptions({ body: JSON.stringify(body) });
       const response = new Response(responseOptions);
+      const requestoptions = new RequestOptions({
+        body: payload,
+        method: RequestMethod.Post,
+        url: config.endPoint
+      });
+      localStorage.setItem(jwtConfigService.getAuthConfig().tokenName, expiredToken);
+
+      let jwtHttp: JwtHttp = new JwtHttp(jwtConfigService, null);
+
+      spyOn(AuthHttp.prototype, 'request' ).and.returnValue(Observable.of(''));
+      spyOn(jwtHttp, '_mergeOptions').and.returnValue(requestoptions);
+      spyOn(jwtHttp, 'httpRequest').and.returnValue(Observable.of(response));
+
+      jwtHttp.request(null, null).subscribe(() => {
+        expect(jwtHttp['_mergeOptions']).toHaveBeenCalledWith(requestoptions, undefined);
+        done();
+      });
+    });
+
+    it('should refresh token', (done: Function) => {
+      const payload = { data: 'I\'m the payload' };
+      const config = { payload, endPoint: 'endPoint' };
+      const jwtConfigService = new JwtConfigService(config, new AuthConfig());
+      const body = {
+        id_token: validToken,
+        refresh_token: newValidToken
+      };
+      const responseOptions = new ResponseOptions({ body: JSON.stringify(body) });
+      const response = new Response(responseOptions);
+      const requestoptions = new RequestOptions({
+        body: payload,
+        method: RequestMethod.Post,
+        url: config.endPoint
+      });
       localStorage.setItem(jwtConfigService.getAuthConfig().tokenName, expiredToken);
 
       let jwtHttp: JwtHttp = new JwtHttp(jwtConfigService, null);
@@ -213,12 +256,14 @@ describe('JwtHttp', () => {
       spyOn(AuthHttp.prototype, 'request' ).and.returnValue(Observable.of(''));
       spyOn(jwtHttp, 'refreshTheToken').and.callThrough();
       spyOn(jwtHttp, '_refreshTheToken').and.callThrough();
+      spyOn(jwtHttp, '_mergeOptions').and.returnValue(requestoptions);
       spyOn(jwtHttp, 'httpRequest').and.returnValue(Observable.of(response));
 
       jwtHttp.request(null, null).subscribe(() => {
         expect(AuthHttp.prototype.request).toHaveBeenCalledWith(null, null);
         expect(jwtHttp['refreshTheToken']).toHaveBeenCalledWith(expiredToken);
         expect(jwtHttp['_refreshTheToken']).toHaveBeenCalledWith();
+        expect(jwtHttp['_mergeOptions']).toHaveBeenCalledWith(requestoptions, undefined);
         expect(jwtHttp['httpRequest']).toHaveBeenCalled();
         expect(jwtConfigService.getAuthConfig().tokenGetter()).toEqual(body.id_token);
         expect(jwtConfigService.getRefreshConfig().refreshTokenGetter()).toEqual(body.refresh_token);
